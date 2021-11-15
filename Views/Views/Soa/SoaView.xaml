@@ -1,0 +1,197 @@
+﻿<UserControl x:Class="Views.SoaView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Views"
+             xmlns:components="clr-namespace:Components"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+
+        <Style TargetType="{x:Type DatePickerTextBox}">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <TextBox x:Name="PART_TextBox"
+                        Text="{Binding Path=SelectedDate, StringFormat='MMM yyyy', 
+                        RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="3 0 0 0 ">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Style="{StaticResource mainLabel}">Statment Of Account</TextBlock>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" BorderThickness="0.5" BorderBrush="DarkGray" CornerRadius="6" Padding="4" Margin="6">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Left" FontSize="14" FontWeight="Light" Text="Start Date:"/>
+                    <DatePicker  Grid.Row="0" Grid.Column="1"  SelectedDate="{Binding DateFilter,Mode=TwoWay}" Width="110" Height="23" HorizontalAlignment="Left" Margin="3 0 0 0" ></DatePicker>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Left" FontSize="14" FontWeight="Light" Text="Company:"/>
+                    <ComboBox  Grid.Row="1" Grid.Column="1" Style="{StaticResource ComboBoxFlatStyle}" ItemsSource="{Binding Companies}" SelectedItem="{Binding SelectedComapny,Mode=TwoWay}" DisplayMemberPath="Name"  Width="110" Height="22" HorizontalAlignment="Left" Margin="3 2 0 0" FontSize="12"/>
+
+                    <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding IsPaidFilter,Mode=TwoWay}" Content="Only Paid" VerticalAlignment="Center" FontSize="13" FontWeight="Light"/>
+                    <CheckBox Grid.Row="2" Grid.Column="1" IsChecked="{Binding IsNotPaidFilter,Mode=TwoWay}" Content="Only Not Paid" VerticalAlignment="Center" FontSize="13" FontWeight="Light"/>
+
+                    <Button Grid.Row="1" Grid.RowSpan="2" Grid.Column="3" Width="150" Height="40" Background="White" Foreground="DarkBlue" FontSize="15" HorizontalAlignment="Left" Command="{Binding SearchCommand}">search</Button>
+
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" BorderThickness="0.5" BorderBrush="DarkGray" Margin="6">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+
+
+                    <Button  Grid.Row="0" Grid.ColumnSpan="2" Margin="3" Foreground="White" Background="{StaticResource primaryBackground}" Width="150" Command="{Binding GotoCreateSoaCommand}">Create SOA</Button>
+                    <StackPanel Grid.Row="1"  Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Width="60" Margin="3" Content="PDF" Background="White" Foreground="DarkBlue" Command="{Binding SaveAsPdfCommand}"/>
+                        <Button Width="60" Margin="3" Content="Excel" Background="White" Foreground="DarkBlue" Command="{Binding SaveAsExcelCommand}"/>
+                    </StackPanel>
+                   
+                    
+                    <components:YesNoButton Grid.Row="1" Grid.Column="1" Width="120" Margin="3" Content="Set As Paid" Background="White" Foreground="DarkBlue" Command="{Binding SetPaidCommand}" Question="Are you sure?"/>
+                    <Button Grid.Row="2" Grid.Column="0" Width="120" Margin="3" Content="Send via Email" Background="White" Foreground="DarkBlue" Command="{Binding GotoSendEmailCommand}"/>
+                    <components:YesNoButton Grid.Row="2" Grid.Column="1" Width="120" Margin="3" Content="Delete" Background="DarkRed" Foreground="White" Command="{Binding DeleteCommand}" Question="Are you sure?"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="2"  Margin="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*"/>
+                </Grid.RowDefinitions>
+                <ListBox Name="list" ItemsSource="{Binding Soas}" HorizontalContentAlignment="Stretch"
+                         SelectionMode="Extended" SelectedItem="{Binding SelectedSoa}" Margin="2">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0 5 0 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Company.Name}" Style="{StaticResource listitemTxt}" Grid.Column="0"/>
+                                <!--<Button Content="Edit"  Command="{Binding DataContext.GoToUpdateInvoiceCommand,
+                                    ElementName=list}" CommandParameter="{Binding}" Grid.Column="3" Grid.RowSpan="2" Height="30" Style="{StaticResource btnListItem}"/>-->
+
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding SoaDate,StringFormat=MMM-yyyy}" Style="{StaticResource listitemTxt}" FontWeight="Light" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Total,StringFormat={}C}" Style="{StaticResource listitemTxt}" FontWeight="Normal" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding IsPaid,Converter={StaticResource boolToPaidConverter}}" Style="{StaticResource listitemTxt}" FontWeight="Normal" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{Binding IsPaid,Converter={StaticResource boolToColorConverter}}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="IsSelected" Value="{Binding IsSelected,Mode=TwoWay}"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+               
+            </Grid>
+            <Border  Margin="6" BorderThickness="1" BorderBrush="DarkGray" Grid.Column="1" Visibility="{Binding ElementName=list,Path=SelectedIndex,Converter={StaticResource intToVisiblConverter}}">
+                <Grid Margin="5 2">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource left_label}" Text="SOA No"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource rigth_label}" FontWeight="Bold" Text="{Binding SelectedSoa.SoaNo}" />
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource left_label}" Text="Company Name"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource rigth_label}" Text="{Binding SelectedSoa.Company.Name}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource left_label}" Text="STATUS"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource rigth_label}" Text="{Binding SelectedSoa.IsPaid,Converter={StaticResource boolToPaidConverter}}" Foreground="{Binding SelectedSoa.IsPaid,Converter={StaticResource boolToColorConverter}}"/>
+                    
+                    <TextBlock Grid.Row="3"  Grid.Column="0" Style="{StaticResource left_label}" Text="Bank" Margin="0 0 0 0"/>
+                    <TextBlock Grid.Row="3" FontWeight="Normal" Grid.Column="1" Style="{StaticResource rigth_label}" Text="{Binding SelectedSoa.Bank.Name}" />
+
+                    <Separator Grid.Row="4" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1"/>
+                    <TextBlock Margin="0 8 0 0" Grid.Row="5" Style="{StaticResource left_label}" FontWeight="Bold" Text="Items:"/>
+                    <ListBox  Margin="0 3 0 0" Grid.Row="6" Grid.ColumnSpan="2" ItemsSource="{Binding SelectedSoa.SoaElements}" HorizontalContentAlignment="Stretch">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Style="{StaticResource left_label}" FontWeight="Normal" Grid.Column="0" Text="{Binding Name}"/>
+                                    <TextBlock Style="{StaticResource rigth_label}" Grid.Column="1" Text="{Binding Price,StringFormat={}C}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+
+                    <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource left_label}" Text="TOTAL" Margin="0 0 0 0"/>
+                    <TextBlock Grid.Row="7" Grid.Column="1" Style="{StaticResource rigth_label}" Text="{Binding SelectedSoa.Total,StringFormat={}C}" Foreground="Red"/>
+                    
+                    
+                </Grid>
+            </Border>
+
+        </Grid>
+
+
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,44 @@
+﻿<Window x:Class="Views.MainWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Views"
+        mc:Ignorable="d"
+        Title="Al Burak Marine" Height="700" Width="1200" WindowStartupLocation="CenterScreen">
+
+
+
+    <Grid Background="#eeeeee">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <Separator Grid.ColumnSpan="2" BorderThickness="1" BorderBrush="DarkBlue"/>
+        <Border Grid.Row="1" Background="DarkBlue" BorderThickness="0 0 1 0"  BorderBrush="DarkBlue">
+            <Image HorizontalAlignment="Center" Source="/Resources/logo.png" Margin="5" Width="200" VerticalAlignment="Center"/>
+        </Border>
+        <Border Grid.Column="0" Grid.Row="2" Background="DarkBlue" BorderBrush="Black" BorderThickness="0 0 1 0">
+            <StackPanel Margin="3 12">
+                <RadioButton Command="{Binding GotoCommand}" IsChecked="True" CommandParameter="InvoiceView" Style="{StaticResource mainButton}">Invoices</RadioButton>
+                <RadioButton Command="{Binding GotoCommand}" CommandParameter="SoaView" Style="{StaticResource mainButton}">SOA</RadioButton>
+                <RadioButton Command="{Binding GotoCommand}" CommandParameter="ItemsView" Style="{StaticResource mainButton}">Sales</RadioButton>
+                <RadioButton Command="{Binding GotoCommand}" CommandParameter="TransactionAccountView" Style="{StaticResource mainButton}">Transactions</RadioButton>
+                <RadioButton Command="{Binding GotoCommand}" CommandParameter="VesselView" Style="{StaticResource mainButton}">Vessels</RadioButton>
+                <RadioButton Command="{Binding GotoCommand}" CommandParameter="CompanyView" Style="{StaticResource mainButton}">Companies</RadioButton>
+                <RadioButton Command="{Binding GotoCommand}" CommandParameter="SettingsView" Style="{StaticResource mainButton}" 
+                       Margin="0 40 0 0" >Settings</RadioButton>
+            </StackPanel>
+        </Border>
+
+        
+
+        <ContentControl Background="DarkGray" Margin="6" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Content="{Binding CurrentViewModel}" />
+    </Grid>
+
+</Window>
